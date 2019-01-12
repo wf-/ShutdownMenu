@@ -60,9 +60,14 @@ void UI::optRebootRcm() {
         UI::deinit();
         appletBeginBlockingHomeButton(0);
         Result rc = splInitialize();
-        rc = splSetConfig ((SplConfigItem) 65001, 1);
         if (R_FAILED(rc)) {
             exitApp();
+        }
+        else {
+            rc = splSetConfig ((SplConfigItem) 65001, 1);
+            if (R_FAILED(rc)) {
+                exitApp();
+            }
         }
     }
 }
