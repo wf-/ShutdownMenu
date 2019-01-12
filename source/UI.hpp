@@ -32,7 +32,6 @@ using namespace std;
 #include "UI/Themes.hpp"
 #include "UI/types.hpp"
 #include "UI/MenuOption.hpp"
-#include "Tools/nandDump.hpp"
 
 class UI
 {
@@ -40,39 +39,20 @@ class UI
         static UI * mInstance;
         Render mRender;
         Themes *mThemes;
-        bool inSubMenu;
         static UI * getInstance();
         static void setInstance(UI ui);
         UI(string title, string footer);
-        void renderMenu();
+        void renderMenu(bool dontUpdateScreen = false);
         void MenuUp();
         void MenuDown();
         void MenuSel();
         void MenuBack();
-        void SubMenuUp();
-        void SubMenuDown();
         bool MessageBox(string header, string message, MessageType type);
-        void CreateProgressBar(ProgBar *prog, string header);
-        void IncrementProgressBar(ProgBar *prog);
-        void drawScaled(SDL_Surface *surf, SDL_Texture *tex, int x, int y, u32 w, u32 h);
     private:
         //MainMenu
-        void optAutoRCM();
-        void optReiUpdate();
-        void optDumpCal0();
-        void optDumpBoots();
-        void optDumpNand();
-        void optToggleKip(string path);
-        void drawKipman();
-        void drawCfwman();
-        
-        //SubMenus
-        void optImage(u32 ind);
-        void optCfwCfg(string file);
         void optShutdown();
         void optReboot();
-        void optAbout();
-        void optUpdateHB();
+        void optRebootRcm();
         
         void CreatePopupBox(u32 x, u32 y, u32 w, u32 h, string header);
         void drawText(int x, int y, SDL_Color scolor, string text, TTF_Font *font);

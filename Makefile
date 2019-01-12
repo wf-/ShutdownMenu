@@ -31,19 +31,19 @@ include $(DEVKITPRO)/libnx/switch_rules
 #     - <libnx folder>/default_icon.jpg
 #---------------------------------------------------------------------------------
 
-APP_TITLE := ReiNX Toolkit
-APP_AUTHOR := Rei
-APP_VERSION := 1.1
+APP_TITLE := Shutdown Menu
+APP_AUTHOR := wf_
+APP_VERSION := 1.0
 
 ICON := Icon.jpg
-TARGET		:=	ReiNXToolkit
+TARGET		:=	ShutdownMenu
 BUILD		:=	build
 SOURCES		:=	source source/UI source/Tools source/Net source/Utils source/Services
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
 ROMFS	:=	romfs
-CONFIG_JSON := ReiNXToolkit.json
+CONFIG_JSON := ShutdownMenu.json
 
 #---------------------------------------------------------------------------------
 # options for code generation

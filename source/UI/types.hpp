@@ -51,12 +51,3 @@ typedef struct
     unsigned PopCol1;
     unsigned PopCol2;
 } Theme;
-
-typedef struct
-{
-    float max;
-    float step;
-    float curr;
-    u32 posx;
-    u32 posy;
-} ProgBar;

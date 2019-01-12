@@ -1,7 +1,7 @@
-# ReiNX Toolkit
+# Shutdown Menu
 [![License (GPL version 3)](https://img.shields.io/badge/license-GNU%20GPL%20version%203-red.svg?style=flat-square)](http://opensource.org/licenses/GPL-3.0)
 
-*A toolkit to be used with the ReiNX CFW*
+*A shutdown menu based of ReiNX Toolkit*
 
 
 **Compiling:**
@@ -11,25 +11,19 @@ You'll need latest devkitpro and switch-sdl. You can install dependencies by run
 
 **Features:**
 
- * Update the ReiNX CFW
+ * It shuts down your Switch!
 
- * Toggle AutoRCM
+ * It reboots your Switch!
  
- * Kip manager
+ * It can also reboot your Switch to RCM mode (DO NOT USE ON EXFAT FORMATTED SD CARDS!).
 
- * Dump NAND/Cal0/Boot0/Boot1
-
- * Convert splash screen given a jpg/png/bmp to splash.bin
- 
- * Reboot / shutdown 
+ * It has light and dark mode!
 
 
 **Credits:**
  
- Calypso and Crusatyr for NAND functions
+ Reisyukaku for ReiNX Toolkit and it's GUI (and shoutouts to whole ReiNX Toolkit Team)
  
- fgsds for utilies code
+ hippydave for RCMReboot
  
- neonsea for kip manager and various other fixes/contributions
- 
- The ReiSwitched community for being my beta testers!
+ libnx Authors

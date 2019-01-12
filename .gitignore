@@ -1,5 +1,4 @@
-build/*
-ReiNXSettings.*
+build/*ShutdownMenu.*
 *.elf
 *.nro
 *.pfs0

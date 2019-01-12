@@ -35,12 +35,9 @@ using namespace std;
 class MenuOption : public MenuObj
 {
     public:
-        MenuOption(string Name, string Desc, function<void()> Call);
-        string getDesc();
+        MenuOption(string Name, function<void()> Call);
         void callFunc();
-        vector<MenuOption> subMenu;
 
     protected:
-        string desc;
         function<void()> callback;
 };

@@ -1,8 +1,8 @@
 {
-    "name": "ReiNX Toolkit",
-    "title_id": "0x0100000000524E58",
-    "title_id_range_min": "0x0100000000524E58",
-    "title_id_range_max": "0x0100000000524E58",
+    "name": "Shutdown Menu",
+    "title_id": "0x0100006608524E58",
+    "title_id_range_min": "0x0100006608524E58",
+    "title_id_range_max": "0x0100006608524E58",
     "main_thread_stack_size": "0x00004000",
     "main_thread_priority": 44,
     "default_cpu_id": 3,

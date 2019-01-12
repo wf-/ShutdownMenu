@@ -29,11 +29,11 @@ int main() {
         hidScanInput();
         u64 PressedInput = hidKeysDown(CONTROLLER_P1_AUTO);
         if((PressedInput & KEY_LSTICK_UP)||(PressedInput & KEY_DUP)) {
-            ui.inSubMenu ? ui.SubMenuUp() : ui.MenuUp();
+            ui.MenuUp();
             ui.renderMenu();
         }
         else if((PressedInput & KEY_LSTICK_DOWN)||(PressedInput & KEY_DDOWN)) {
-            ui.inSubMenu ? ui.SubMenuDown() : ui.MenuDown();
+            ui.MenuDown();
             ui.renderMenu();
         }
         if(PressedInput & KEY_A) {
