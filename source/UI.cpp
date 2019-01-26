@@ -20,6 +20,8 @@
 #include "UI.hpp"
 #include "Power.hpp"
 
+#include "Services/reboot_to_payload.h"
+
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
 
@@ -28,8 +30,6 @@ static u32 vol = 64;
 static u32 titleX = 130;
 static u32 titleY = 40;
 static u32 menuX = 55, menuY = 115;
-
-static bool deinited = false;
 
 static string title;
 static string version;
@@ -57,15 +57,34 @@ void UI::optRebootRcm() {
     if (MessageBox("Warning!",
             "This may - and probably will - corrupt\nyour exFAT file system!\nDo NOT continue on exFAT formatted\nSD Card.\n\nDo you want to continue?",
             TYPE_YES_NO)) {
-        UI::deinit();
-        appletBeginBlockingHomeButton(0);
         Result rc = splInitialize();
         if (R_FAILED(rc)) {
-            exitApp();
+            MessageBox("Error", "spl initialization failed", TYPE_OK);
         }
         else {
             rc = splSetConfig ((SplConfigItem) 65001, 1);
             if (R_FAILED(rc)) {
+                splExit();
+                exitApp();
+            }
+        }
+    }
+}
+void UI::optRebootToPayload() {
+    Result rc = splInitialize();
+    if (R_FAILED(rc)) {
+        MessageBox("Error", "spl initialization failed", TYPE_OK);
+    }
+    else {
+        FILE *f = fopen("sdmc:/atmosphere/reboot_payload.bin", "rb");
+        if (f == NULL) {
+            MessageBox("Error", "Failed to open\natmosphere/reboot_payload.bin",
+                    TYPE_OK);
+        }
+        else {
+            rc = reboot_to_payload(f);
+            if (R_FAILED(rc)) {
+                splExit();
                 exitApp();
             }
         }
@@ -107,6 +126,7 @@ UI::UI(string Title, string Version) {
     //Main pages
     mainMenu.push_back(MenuOption("Power off", bind(&UI::optShutdown, this)));
     mainMenu.push_back(MenuOption("Restart", bind(&UI::optReboot, this)));
+    mainMenu.push_back(MenuOption("Restart and load atmosphere/reboot_payload.bin", bind(&UI::optRebootToPayload, this)));
     mainMenu.push_back(MenuOption("Restart to RCM (Dangerous for exFAT file systems!)", bind(&UI::optRebootRcm, this)));
 }
 
@@ -132,11 +152,10 @@ void UI::deinit() {
     romfsExit();
     socketExit();
     fsdevUnmountAll();
-    deinited = true;
 }
 
 void UI::exitApp() {
-    if (!deinited) deinit();
+    deinit();
     appletEndBlockingHomeButton(); // make sure we don't screw up hbmenu
     ::exit(0);
 }
@@ -234,8 +253,8 @@ bool UI::MessageBox(string header, string message, MessageType type) {
             Mix_PlayMusic(menuConfirm, 1);
             break;
         }
-        else if(kDown & KEY_B) {
-            ret = (type == TYPE_OK);
+        else if((kDown & KEY_B) && type == TYPE_YES_NO) {
+            ret = false;
             Mix_PlayMusic(menuBack, 1);
             break;
         }

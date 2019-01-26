@@ -53,7 +53,8 @@ class UI
         void optShutdown();
         void optReboot();
         void optRebootRcm();
-        
+        void optRebootToPayload();
+
         void CreatePopupBox(u32 x, u32 y, u32 w, u32 h, string header);
         void drawText(int x, int y, SDL_Color scolor, string text, TTF_Font *font);
         void drawRect(int x, int y, int w, int h, SDL_Color scolor);

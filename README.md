@@ -14,16 +14,20 @@ You'll need latest devkitpro and switch-sdl. You can install dependencies by run
  * It shuts down your Switch!
 
  * It reboots your Switch!
- 
+
+ * It reboots and loads payload from atmosphere/reboot_payload.bin!
+
  * It can also reboot your Switch to RCM mode (DO NOT USE ON EXFAT FORMATTED SD CARDS!).
 
  * It has light and dark mode!
 
 
 **Credits:**
- 
+
  Reisyukaku for ReiNX Toolkit and it's GUI (and shoutouts to whole ReiNX Toolkit Team)
- 
+
  hippydave for RCMReboot
- 
+
+ SciresM for reboot_to_payload example from Atmosphere
+
  libnx Authors
