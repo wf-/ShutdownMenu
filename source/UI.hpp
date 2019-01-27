@@ -54,6 +54,7 @@ class UI
         void optReboot();
         void optRebootRcm();
         void optRebootToPayload();
+        void atmoReboot(RebootType type);
 
         void CreatePopupBox(u32 x, u32 y, u32 w, u32 h, string header);
         void drawText(int x, int y, SDL_Color scolor, string text, TTF_Font *font);

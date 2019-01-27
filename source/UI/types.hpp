@@ -38,6 +38,7 @@ using namespace std;
 #define GREEN 0xFF00FF
 
 enum MessageType {TYPE_OK, TYPE_YES_NO};
+enum RebootType {TYPE_RCM, TYPE_PAYLOAD};
 
 typedef struct
 {

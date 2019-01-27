@@ -56,24 +56,12 @@ void UI::optShutdown() {
     Power::Shutdown();
 }
 void UI::optRebootRcm() {
-    if (MessageBox("Warning!",
-            "This may corrupt your exFAT file system!\nUse at your own risk on exFAT formatted\nSD Card.\n\nDo you want to continue?",
-            TYPE_YES_NO)) {
-        Result rc = splInitialize();
-        if (R_FAILED(rc)) {
-            MessageBox("Error", "spl initialization failed\n\nAre you using Atmosphere?", TYPE_OK);
-        }
-        else {
-            deinit();
-            rc = splSetConfig ((SplConfigItem) 65001, 1);
-            if (R_FAILED(rc)) {
-                splExit();
-                exitApp();
-            }
-        }
-    }
+    UI::atmoReboot(TYPE_RCM);
 }
 void UI::optRebootToPayload() {
+    UI::atmoReboot(TYPE_PAYLOAD);
+}
+void UI::atmoReboot(RebootType type) {
     if (MessageBox("Warning!",
             "This may corrupt your exFAT file system!\nUse at your own risk on exFAT formatted\nSD Card.\n\nDo you want to continue?",
             TYPE_YES_NO)) {
@@ -82,20 +70,38 @@ void UI::optRebootToPayload() {
             MessageBox("Error",
                     "spl initialization failed\n\nAre you using Atmosphere?",
                     TYPE_OK);
-        } else {
-            FILE *f = fopen("sdmc:/atmosphere/reboot_payload.bin", "rb");
-            if (f == NULL) {
-                MessageBox("Error",
-                        "Failed to open\natmosphere/reboot_payload.bin",
-                        TYPE_OK);
-            } else {
-                read_payload(f);
-                deinit();
-                rc = reboot_to_payload();
-                if (R_FAILED(rc)) {
-                    splExit();
-                    exitApp();
+        }
+        else {
+            switch (type) {
+                case TYPE_RCM: {
+                    deinit();
+                    rc = splSetConfig ((SplConfigItem) 65001, 1);
+                    if (R_FAILED(rc)) {
+                        splExit();
+                        exitApp();
+                    }
                 }
+                break;
+                case TYPE_PAYLOAD: {
+                    FILE *f = fopen("sdmc:/atmosphere/reboot_payload.bin", "rb");
+                    if (f == NULL) {
+                        MessageBox("Error",
+                                "Failed to open\natmosphere/reboot_payload.bin",
+                                TYPE_OK);
+                    }
+                    else {
+                        read_payload(f);
+                        deinit();
+                        rc = reboot_to_payload();
+                        if (R_FAILED(rc)) {
+                            splExit();
+                            exitApp();
+                        }
+                    }
+                }
+                break;
+                default:
+                break;
             }
         }
     }
