@@ -142,8 +142,8 @@ UI::UI(string Title, string Version) {
     //Main pages
     mainMenu.push_back(MenuOption("Power off", bind(&UI::optShutdown, this)));
     mainMenu.push_back(MenuOption("Restart", bind(&UI::optReboot, this)));
-    mainMenu.push_back(MenuOption("Restart to atmosphere/reboot_payload.bin", bind(&UI::optRebootToPayload, this)));
-    mainMenu.push_back(MenuOption("Restart to RCM", bind(&UI::optRebootRcm, this)));
+    mainMenu.push_back(MenuOption("Restart to atmosphere/reboot_payload.bin \ue151", bind(&UI::optRebootToPayload, this)));
+    mainMenu.push_back(MenuOption("Restart to RCM \ue151", bind(&UI::optRebootRcm, this)));
 }
 
 void UI::setInstance(UI ui) {
