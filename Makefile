@@ -33,7 +33,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 
 APP_TITLE := Shutdown Menu
 APP_AUTHOR := wf_
-APP_VERSION := 1.1.1
+APP_VERSION := 1.11
 
 ICON := Icon.jpg
 TARGET		:=	ShutdownMenu
