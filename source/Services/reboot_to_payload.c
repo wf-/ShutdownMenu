@@ -42,10 +42,12 @@ static void clear_iram(void) {
     }
 }
 
-Result reboot_to_payload(FILE* f) {
+void read_payload(FILE* f) {
     fread(g_reboot_payload, 1, sizeof(g_reboot_payload), f);
     fclose(f);
+}
 
+Result reboot_to_payload(void) {
     clear_iram();
 
     for (size_t i = 0; i < IRAM_PAYLOAD_MAX_SIZE; i += 0x1000) {

@@ -15,9 +15,9 @@ You'll need latest devkitpro and switch-sdl. You can install dependencies by run
 
  * It reboots your Switch!
 
- * It reboots and loads payload from atmosphere/reboot_payload.bin!
+ * It reboots and loads payload from atmosphere/reboot_payload.bin (Atmosphere only, potentially dangerous for exFAT file systems)!
 
- * It can also reboot your Switch to RCM mode (DO NOT USE ON EXFAT FORMATTED SD CARDS!).
+ * It can also reboot your Switch to RCM mode (Atmosphere only, potentially dangerous for exFAT file systems)!
 
  * It has light and dark mode!
 

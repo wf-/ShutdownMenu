@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-Result reboot_to_payload(FILE* f);
+void read_payload(FILE* f);
+Result reboot_to_payload(void);
 
 #ifdef __cplusplus
 }

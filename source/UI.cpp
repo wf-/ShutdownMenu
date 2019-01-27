@@ -31,6 +31,8 @@ static u32 titleX = 130;
 static u32 titleY = 40;
 static u32 menuX = 55, menuY = 115;
 
+static bool deinited = false;
+
 static string title;
 static string version;
 
@@ -55,13 +57,14 @@ void UI::optShutdown() {
 }
 void UI::optRebootRcm() {
     if (MessageBox("Warning!",
-            "This may - and probably will - corrupt\nyour exFAT file system!\nDo NOT continue on exFAT formatted\nSD Card.\n\nDo you want to continue?",
+            "This may corrupt your exFAT file system!\nUse at your own risk on exFAT formatted\nSD Card.\n\nDo you want to continue?",
             TYPE_YES_NO)) {
         Result rc = splInitialize();
         if (R_FAILED(rc)) {
-            MessageBox("Error", "spl initialization failed", TYPE_OK);
+            MessageBox("Error", "spl initialization failed\n\nAre you using Atmosphere?", TYPE_OK);
         }
         else {
+            deinit();
             rc = splSetConfig ((SplConfigItem) 65001, 1);
             if (R_FAILED(rc)) {
                 splExit();
@@ -71,21 +74,28 @@ void UI::optRebootRcm() {
     }
 }
 void UI::optRebootToPayload() {
-    Result rc = splInitialize();
-    if (R_FAILED(rc)) {
-        MessageBox("Error", "spl initialization failed", TYPE_OK);
-    }
-    else {
-        FILE *f = fopen("sdmc:/atmosphere/reboot_payload.bin", "rb");
-        if (f == NULL) {
-            MessageBox("Error", "Failed to open\natmosphere/reboot_payload.bin",
+    if (MessageBox("Warning!",
+            "This may corrupt your exFAT file system!\nUse at your own risk on exFAT formatted\nSD Card.\n\nDo you want to continue?",
+            TYPE_YES_NO)) {
+        Result rc = splInitialize();
+        if (R_FAILED(rc)) {
+            MessageBox("Error",
+                    "spl initialization failed\n\nAre you using Atmosphere?",
                     TYPE_OK);
-        }
-        else {
-            rc = reboot_to_payload(f);
-            if (R_FAILED(rc)) {
-                splExit();
-                exitApp();
+        } else {
+            FILE *f = fopen("sdmc:/atmosphere/reboot_payload.bin", "rb");
+            if (f == NULL) {
+                MessageBox("Error",
+                        "Failed to open\natmosphere/reboot_payload.bin",
+                        TYPE_OK);
+            } else {
+                read_payload(f);
+                deinit();
+                rc = reboot_to_payload();
+                if (R_FAILED(rc)) {
+                    splExit();
+                    exitApp();
+                }
             }
         }
     }
@@ -127,7 +137,7 @@ UI::UI(string Title, string Version) {
     mainMenu.push_back(MenuOption("Power off", bind(&UI::optShutdown, this)));
     mainMenu.push_back(MenuOption("Restart", bind(&UI::optReboot, this)));
     mainMenu.push_back(MenuOption("Restart and load atmosphere/reboot_payload.bin", bind(&UI::optRebootToPayload, this)));
-    mainMenu.push_back(MenuOption("Restart to RCM (Dangerous for exFAT file systems!)", bind(&UI::optRebootRcm, this)));
+    mainMenu.push_back(MenuOption("Restart to RCM", bind(&UI::optRebootRcm, this)));
 }
 
 void UI::setInstance(UI ui) {
@@ -141,6 +151,8 @@ UI *UI::getInstance() {
 }
 
 void UI::deinit() {
+    if (deinited) return;
+
     TTF_Quit();
     IMG_Quit();
     Mix_CloseAudio();
@@ -152,6 +164,8 @@ void UI::deinit() {
     romfsExit();
     socketExit();
     fsdevUnmountAll();
+
+    deinited = true;
 }
 
 void UI::exitApp() {
